@@ -3,6 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { Snackbar, Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import AddCustomer from "./AddCustomer";
 
 function Customerlist() {
@@ -39,6 +40,20 @@ function Customerlist() {
       .catch((err) => console.error(err));
   };
 
+  const deleteCustomer = (url) => {
+    console.log(url);
+    if (window.confirm("Are you sure?")) {
+      fetch(url, { method: "DELETE" }).then((response) => {
+        if (!response.ok) {
+          throw new Error("Error in deletion: " + response.statusText);
+        } else {
+          SetOpen(true);
+          fetchCustomers();
+        }
+      });
+    }
+  };
+
   const [columnDefs] = useState([
     {
       field: "lastname",
@@ -62,6 +77,16 @@ function Customerlist() {
     { field: "city", sortable: true, filter: true, width: 100 },
     { field: "email", sortable: true, filter: true },
     { field: "phone", sortable: true, filter: true },
+    {
+      cellRenderer: (params) => (
+        <Button
+          startIcon={<DeleteIcon />}
+          color="error"
+          size="small"
+          onClick={() => deleteCustomer(params.data.links[0].href)}
+        />
+      ),
+    },
   ]);
 
   return (
@@ -80,7 +105,7 @@ function Customerlist() {
         autoHideDuration={3000}
         onClose={() => SetOpen(false)}
         message="Customer deleted successfully"
-        />
+      />
     </>
   );
 }
