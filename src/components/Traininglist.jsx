@@ -3,9 +3,12 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import dayjs from "dayjs";
+import { Snackbar, Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Traininglist() {
   const [trainings, setTrainings] = useState([]);
+  const [open, SetOpen] = useState(false);
 
   const customerFirstName = (params) => {
     return params.data.customer.firstname;
@@ -15,10 +18,10 @@ function Traininglist() {
     return params.data.customer.lastname;
   };
 
-  const gettrainingsUrl = import.meta.env.VITE_URL;
+  const urlNoApi = import.meta.env.VITE_URL;
 
   const fetchTrainings = () => {
-    fetch(`${gettrainingsUrl}/gettrainings`)
+    fetch(`${urlNoApi}/gettrainings`)
       .then((response) => {
         if (!response.ok)
           throw new Error("Something went wrong: " + response.statusText);
@@ -29,11 +32,42 @@ function Traininglist() {
       .catch((err) => console.error(err));
   };
 
+  const deleteTraining = (url) => {
+    console.log(url);
+    if (window.confirm("Are you sure?")) {
+      fetch(url, { method: "DELETE" }).then((response) => {
+        if (!response.ok) {
+          throw new Error("Error in deletion: " + response.statusText);
+        } else {
+          SetOpen(true);
+          fetchTrainings();
+        }
+      });
+    }
+  }
+
   useEffect(() => {
     fetchTrainings();
   }, []);
 
+  // onClick={() => deleteTraining(row.data.links[0].href)}
+  // console.log(row.data.id)
   const [columnDefs] = useState([
+    {
+      headerName: "Actions",
+      sortable: false,
+      width: 100,
+      cellRenderer: (row) => (
+        <>
+        <Button
+          startIcon={<DeleteIcon />}
+          color="error"
+          size="small"
+          onClick={() => deleteTraining(`${urlNoApi}/api/trainings/${row.data.id}`)}
+        />
+        </>
+      ),
+    },
     {
       field: "date",
       sortable: true,
@@ -86,6 +120,12 @@ function Traininglist() {
           paginationAutoPageSize={true}
         />
       </div>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => SetOpen(false)}
+        message="Training deleted successfully"
+      />
     </>
   );
 }
