@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
+import { Snackbar, Button } from "@mui/material";
+import AddCustomer from "./AddCustomer";
 
 function Customerlist() {
   const [customers, setCustomers] = useState([]);
+  const [open, SetOpen] = useState(false);
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -23,6 +26,18 @@ function Customerlist() {
   useEffect(() => {
     fetchCustomers();
   }, []);
+
+  const saveCustomer = (customer) => {
+    fetch(`${apiUrl}/customers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(customer),
+    })
+      .then((res) => fetchCustomers())
+      .catch((err) => console.error(err));
+  };
 
   const [columnDefs] = useState([
     {
@@ -59,6 +74,13 @@ function Customerlist() {
           paginationAutoPageSize={true}
         />
       </div>
+      <AddCustomer saveCustomer={saveCustomer} />
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => SetOpen(false)}
+        message="Customer deleted successfully"
+        />
     </>
   );
 }
