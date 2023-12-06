@@ -2,7 +2,7 @@ import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import dayjs from "dayjs";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState, useEffect } from "react";
-import { fetchTrainings } from "./ApiTrainings";
+import { fetchTrainings } from "./apiTrainings";
 
 function TrainingCalendar() {
   // date formatting
