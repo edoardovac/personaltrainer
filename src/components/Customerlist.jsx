@@ -173,20 +173,16 @@ function Customerlist() {
       >
         <AddCustomer saveCustomer={saveCustomer} />
         <FilterSearch onFilterTextBoxChanged={onFilterTextBoxChanged} />
-        <Button
-          onClick={onBtnExport}
-          variant="contained"
-          size="small"
-        >
+        <Button onClick={onBtnExport} variant="contained" size="small">
           <SaveAltOutlinedIcon />
         </Button>
       </div>
       <Snackbar
-          open={open}
-          autoHideDuration={3000}
-          onClose={() => setOpen(false)}
-          message={snackbarMessage}
-        />
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+        message={snackbarMessage}
+      />
     </>
   );
 }
