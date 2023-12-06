@@ -2,7 +2,7 @@ import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import dayjs from "dayjs";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState, useEffect } from "react";
-import { Typography } from "@mui/material";
+import "../index.css";
 
 function TrainingCalendar() {
   const urlNoApi = import.meta.env.VITE_URL;
@@ -38,11 +38,9 @@ function TrainingCalendar() {
     setEvents(formattedTraining);
   }, [trainings]);
 
-  //having typography wrap calendar generates a warning in the console when accessing the page
   return (
     <>
-      <Typography variant="body1">
-        Welcome to the website
+      <div className="body1">
         <Calendar
           localizer={localizer}
           events={events}
@@ -50,7 +48,7 @@ function TrainingCalendar() {
           endAccessor="end"
           style={{ height: 500 }}
         />
-      </Typography>
+      </div>
     </>
   );
 }
