@@ -1,24 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import dayjs from "dayjs";
 import { Snackbar, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
+import FilterSearch from "./FilterSearch";
 
 function Traininglist() {
+  const urlNoApi = import.meta.env.VITE_URL;
   const [trainings, setTrainings] = useState([]);
   const [open, SetOpen] = useState(false);
+  const gridRef = useRef();
 
   const customerFirstName = (params) => {
     return params.data.customer.firstname;
   };
-
   const customerLastName = (params) => {
     return params.data.customer.lastname;
   };
-
-  const urlNoApi = import.meta.env.VITE_URL;
 
   const fetchTrainings = () => {
     fetch(`${urlNoApi}/gettrainings`)
@@ -44,10 +45,35 @@ function Traininglist() {
         }
       });
     }
-  }
+  };
+
+  // csv export
+  const onBtnExport = useCallback(() => {
+    const params = {
+      columnKeys: [
+        "lastname",
+        "firstname",
+        "streetaddress",
+        "postcode",
+        "city",
+        "email",
+        "phone",
+      ],
+      fileName: "customerlist.csv",
+    };
+    gridRef.current.api.exportDataAsCsv(params);
+  }, []);
 
   useEffect(() => {
     fetchTrainings();
+  }, []);
+
+  // filtering
+  const onFilterTextBoxChanged = useCallback(() => {
+    gridRef.current.api.setGridOption(
+      "quickFilterText",
+      document.getElementById("filter-text-box").value
+    );
   }, []);
 
   const [columnDefs] = useState([
@@ -57,12 +83,21 @@ function Traininglist() {
       width: 100,
       cellRenderer: (row) => (
         <>
-        <Button
-          startIcon={<DeleteIcon />}
-          color="error"
-          size="small"
-          onClick={() => deleteTraining(`${urlNoApi}/api/trainings/${row.data.id}`)}
-        />
+          <Button
+            color="error"
+            size="small"
+            onClick={() =>
+              deleteTraining(`${urlNoApi}/api/trainings/${row.data.id}`)
+            }
+            style={{
+              borderRadius: "50%",
+              height: "40px",
+              width: "40px",
+              minWidth: "40px",
+            }}
+          >
+            <DeleteIcon />
+          </Button>
         </>
       ),
     },
@@ -112,6 +147,7 @@ function Traininglist() {
     <>
       <div className="ag-theme-material" style={{ height: 500 }}>
         <AgGridReact
+          ref={gridRef}
           rowData={trainings}
           columnDefs={columnDefs}
           pagination={true}
@@ -124,6 +160,15 @@ function Traininglist() {
         onClose={() => SetOpen(false)}
         message="Training deleted successfully"
       />
+      <div
+        id="flex-needed"
+        style={{ display: "flex", alignItems: "center", gap: "10px" }}
+      >
+        <FilterSearch onFilterTextBoxChanged={onFilterTextBoxChanged} />
+        <Button onClick={onBtnExport} variant="contained">
+          <SaveAltOutlinedIcon />
+        </Button>
+      </div>
     </>
   );
 }

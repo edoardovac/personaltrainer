@@ -5,7 +5,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
 function EditCustomer(props) {
   const [open, setOpen] = useState(false);
@@ -21,14 +21,14 @@ function EditCustomer(props) {
 
   const handleClickOpen = () => {
     setCustomer({
-        firstname: props.customer.firstname,
-        lastname: props.customer.lastname,
-        email: props.customer.email,
-        phone: props.customer.phone,
-        streetaddress: props.customer.streetaddress,
-        postcode: props.customer.postcode,
-        city: props.customer.city,
-    })
+      firstname: props.customer.firstname,
+      lastname: props.customer.lastname,
+      email: props.customer.email,
+      phone: props.customer.phone,
+      streetaddress: props.customer.streetaddress,
+      postcode: props.customer.postcode,
+      city: props.customer.city,
+    });
     setOpen(true);
   };
 
@@ -48,12 +48,17 @@ function EditCustomer(props) {
   return (
     <>
       <Button
-        startIcon={<EditIcon />}
         color="primary"
         size="small"
-        style={{ margin: 10 }}
+        style={{
+          borderRadius: "50%",
+          height: "40px",
+          width: "40px",
+          minWidth: "40px",
+        }}
         onClick={handleClickOpen}
       >
+        <EditIcon />
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Customer</DialogTitle>
@@ -118,7 +123,7 @@ function EditCustomer(props) {
             type="name"
             fullWidth
             variant="standard"
-          /> 
+          />
           <TextField
             margin="dense"
             name="city"
@@ -128,7 +133,7 @@ function EditCustomer(props) {
             type="name"
             fullWidth
             variant="standard"
-          />                       
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

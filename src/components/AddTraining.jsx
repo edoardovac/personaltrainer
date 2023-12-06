@@ -64,7 +64,7 @@ function AddTraining(props) {
       <Button
         variant="outlined"
         size="small"
-        style={{ margin: 10 }}
+        style={{ marginLeft: 10 }}
         onClick={handleClickOpen}
       >
         Add Training
