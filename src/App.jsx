@@ -4,7 +4,7 @@ import TabApp from "./components/TabApp";
 function App() {
   return (
     <>
-      <Header /> 
+      <Header />
       <TabApp />
     </>
   );

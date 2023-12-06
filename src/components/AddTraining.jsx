@@ -5,11 +5,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
-import 'dayjs/locale/de';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
+import "dayjs/locale/de";
 
 function AddTraining(props) {
   const [open, setOpen] = useState(false);
@@ -49,6 +49,7 @@ function AddTraining(props) {
       body: JSON.stringify(training),
     })
       .then(() => {
+        // to change snackbar message since both customers and trainings can be added from the same page
         props.setSnackbarMessage("Training added successfully");
         props.setSnackbarOpen(true);
       })

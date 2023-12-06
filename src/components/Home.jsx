@@ -17,7 +17,7 @@ function Home() {
         </li>
         <li>
           <Typography variant="body1">
-            Calendar to the trainings logged into a calendar
+            Calendar to see the trainings logged into a calendar
           </Typography>
         </li>
         <li>

@@ -1,19 +1,26 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import dayjs from "dayjs";
-import { Snackbar, Button } from "@mui/material";
+import { Button } from "@mui/material";
+import CustomSnackbar from "./CustomSnackbar";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
+import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import FilterSearch from "./FilterSearch";
+import { fetchTrainings } from "./ApiTrainings";
+import TableRender from "./TableRender";
 
 function Traininglist() {
-  const urlNoApi = import.meta.env.VITE_URL;
   const [trainings, setTrainings] = useState([]);
-  const [open, SetOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const gridRef = useRef();
 
+  // get trainings from
+  useEffect(() => {
+    fetchTrainings(setTrainings);
+  }, []);
+
+  // to get full customers' names that will be shown in the table
   const customerFirstName = (params) => {
     return params.data.customer.firstname;
   };
@@ -21,18 +28,7 @@ function Traininglist() {
     return params.data.customer.lastname;
   };
 
-  const fetchTrainings = () => {
-    fetch(`${urlNoApi}/gettrainings`)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error("Something went wrong: " + response.statusText);
-
-        return response.json();
-      })
-      .then((data) => setTrainings(data))
-      .catch((err) => console.error(err));
-  };
-
+  // to delete training with confirmation and update table
   const deleteTraining = (url) => {
     console.log(url);
     if (window.confirm("Are you sure?")) {
@@ -40,8 +36,8 @@ function Traininglist() {
         if (!response.ok) {
           throw new Error("Error in deletion: " + response.statusText);
         } else {
-          SetOpen(true);
-          fetchTrainings();
+          setOpen(true);
+          return fetchTrainings(setTrainings);
         }
       });
     }
@@ -50,20 +46,10 @@ function Traininglist() {
   // csv export
   const onBtnExport = useCallback(() => {
     const params = {
-      columnKeys: [
-        "date",
-        "duration",
-        "activity",
-        "lastname",
-        "firstname",
-      ],
+      columnKeys: ["date", "duration", "activity", "lastname", "firstname"],
       fileName: "traininglist.csv",
     };
     gridRef.current.api.exportDataAsCsv(params);
-  }, []);
-
-  useEffect(() => {
-    fetchTrainings();
   }, []);
 
   // filtering
@@ -74,6 +60,7 @@ function Traininglist() {
     );
   }, []);
 
+  // ag-grid columns
   const [columnDefs] = useState([
     {
       headerName: "Actions",
@@ -85,7 +72,9 @@ function Traininglist() {
             color="error"
             size="small"
             onClick={() =>
-              deleteTraining(`${urlNoApi}/api/trainings/${row.data.id}`)
+              deleteTraining(
+                `${import.meta.env.VITE_URL}/api/trainings/${row.data.id}`
+              )
             }
             style={{
               borderRadius: "50%",
@@ -143,19 +132,10 @@ function Traininglist() {
 
   return (
     <>
-      <div className="ag-theme-material" style={{ height: 500 }}>
-        <AgGridReact
-          ref={gridRef}
-          rowData={trainings}
-          columnDefs={columnDefs}
-          pagination={true}
-          paginationAutoPageSize={true}
-        />
-      </div>
-      <Snackbar
+      <TableRender rowData={trainings} columnDefs={columnDefs}/>
+      <CustomSnackbar
         open={open}
-        autoHideDuration={3000}
-        onClose={() => SetOpen(false)}
+        onClose={() => setOpen(false)}
         message="Training deleted successfully"
       />
       <div
@@ -163,8 +143,8 @@ function Traininglist() {
         style={{ display: "flex", alignItems: "center", gap: "10px" }}
       >
         <FilterSearch onFilterTextBoxChanged={onFilterTextBoxChanged} />
-        <Button onClick={onBtnExport} variant="contained">
-          <SaveAltOutlinedIcon />
+        <Button onClick={onBtnExport} variant="contained" size="small">
+          <FileDownloadRoundedIcon />
         </Button>
       </div>
     </>

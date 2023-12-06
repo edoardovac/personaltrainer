@@ -106,7 +106,7 @@ function AddCustomer(props) {
             type="name"
             fullWidth
             variant="standard"
-          /> 
+          />
           <TextField
             margin="dense"
             name="city"
@@ -116,7 +116,7 @@ function AddCustomer(props) {
             type="name"
             fullWidth
             variant="standard"
-          />                       
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

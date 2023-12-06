@@ -1,52 +1,41 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
-import { Snackbar, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
 import AddTraining from "./AddTraining";
-import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
+import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import FilterSearch from "./FilterSearch";
+import { fetchCustomers } from "./apiCustomers";
+import CustomSnackbar from "./CustomSnackbar";
+import TableRender from "./TableRender";
 
 function Customerlist() {
   const [customers, setCustomers] = useState([]);
-  const apiUrl = import.meta.env.VITE_API_URL;
   const [open, setOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const gridRef = useRef();
 
-  const fetchCustomers = () => {
-    fetch(`${apiUrl}/customers`)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error("Something went wrong: " + response.statusText);
-
-        return response.json();
-      })
-      .then((data) => setCustomers(data.content))
-      .catch((err) => console.error(err));
-  };
-
+  // fetch customers from database
   useEffect(() => {
-    fetchCustomers();
+    fetchCustomers(setCustomers);
   }, []);
 
   const saveCustomer = (customer) => {
-    fetch(`${apiUrl}/customers`, {
+    fetch(`${import.meta.env.VITE_API_URL}/customers`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(customer),
     })
-      .then((res) => fetchCustomers())
+      .then(() => fetchCustomers(setCustomers))
       .catch((err) => console.error(err));
   };
 
   const deleteCustomer = (url) => {
-    console.log(url);
     if (window.confirm("Are you sure?")) {
       fetch(url, { method: "DELETE" }).then((response) => {
         if (!response.ok) {
@@ -54,7 +43,7 @@ function Customerlist() {
         } else {
           setSnackbarMessage("Customer deleted successfully");
           setOpen(true);
-          fetchCustomers();
+          return fetchCustomers(setCustomers);
         }
       });
     }
@@ -68,7 +57,7 @@ function Customerlist() {
       },
       body: JSON.stringify(customer),
     })
-      .then((res) => fetchCustomers())
+      .then(() => fetchCustomers(setCustomers))
       .catch((err) => console.error(err));
   };
 
@@ -97,6 +86,7 @@ function Customerlist() {
     );
   }, []);
 
+  // ag-grid columns
   const [columnDefs] = useState([
     {
       headerName: "Actions",
@@ -127,7 +117,6 @@ function Customerlist() {
         </div>
       ),
     },
-
     {
       field: "lastname",
       headerName: "Last Name",
@@ -157,16 +146,7 @@ function Customerlist() {
 
   return (
     <>
-      <div className="ag-theme-material" style={{ height: 500 }}>
-        <AgGridReact
-          ref={gridRef}
-          rowData={customers}
-          columnDefs={columnDefs}
-          pagination={true}
-          paginationAutoPageSize={true}
-          suppressCellFocus={true}
-        />
-      </div>
+      <TableRender rowData={customers} columnDefs={columnDefs} />
       <div
         id="flex-needed"
         style={{ display: "flex", alignItems: "center", gap: "10px" }}
@@ -174,12 +154,11 @@ function Customerlist() {
         <AddCustomer saveCustomer={saveCustomer} />
         <FilterSearch onFilterTextBoxChanged={onFilterTextBoxChanged} />
         <Button onClick={onBtnExport} variant="contained" size="small">
-          <SaveAltOutlinedIcon />
+          <FileDownloadRoundedIcon />
         </Button>
       </div>
-      <Snackbar
+      <CustomSnackbar
         open={open}
-        autoHideDuration={3000}
         onClose={() => setOpen(false)}
         message={snackbarMessage}
       />
