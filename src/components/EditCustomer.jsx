@@ -56,7 +56,7 @@ function EditCustomer(props) {
       >
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Car</DialogTitle>
+        <DialogTitle>Edit Customer</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

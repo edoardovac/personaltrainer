@@ -44,7 +44,7 @@ function AddCustomer(props) {
         Add Customer
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Car</DialogTitle>
+        <DialogTitle>New Customer</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

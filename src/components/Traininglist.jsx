@@ -50,8 +50,6 @@ function Traininglist() {
     fetchTrainings();
   }, []);
 
-  // onClick={() => deleteTraining(row.data.links[0].href)}
-  // console.log(row.data.id)
   const [columnDefs] = useState([
     {
       headerName: "Actions",

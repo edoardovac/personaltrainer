@@ -6,12 +6,13 @@ import { Snackbar, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
+import AddTraining from "./AddTraining";
 
 function Customerlist() {
   const [customers, setCustomers] = useState([]);
-  const [open, SetOpen] = useState(false);
-
   const apiUrl = import.meta.env.VITE_API_URL;
+  const [open, setOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const fetchCustomers = () => {
     fetch(`${apiUrl}/customers`)
@@ -48,7 +49,8 @@ function Customerlist() {
         if (!response.ok) {
           throw new Error("Error in deletion: " + response.statusText);
         } else {
-          SetOpen(true);
+          setSnackbarMessage("Customer deleted successfully");
+          setOpen(true);
           fetchCustomers();
         }
       });
@@ -71,16 +73,22 @@ function Customerlist() {
     {
       headerName: "Actions",
       sortable: false,
-      width: 200,
+      width: 350,
       cellRenderer: (row) => (
-        <>
-        <EditCustomer updateCustomer={updateCustomer} customer={row.data} />
-        <Button
-          startIcon={<DeleteIcon />}
-          color="error"
-          size="small"
-          onClick={() => deleteCustomer(row.data.links[0].href)}
-        />
+          <>
+          <EditCustomer updateCustomer={updateCustomer} customer={row.data} />
+          <Button
+            startIcon={<DeleteIcon />}
+            color="error"
+            size="small"
+            onClick={() => deleteCustomer(row.data.links[0].href)}
+          />
+          <AddTraining
+            customer={row.data.links[0].href}
+            // to change snackbar message when adding a training
+            setSnackbarMessage={setSnackbarMessage}
+            setSnackbarOpen={setOpen}
+          />
         </>
       ),
     },
@@ -120,14 +128,15 @@ function Customerlist() {
           columnDefs={columnDefs}
           pagination={true}
           paginationAutoPageSize={true}
+          suppressCellFocus={true}
         />
       </div>
       <AddCustomer saveCustomer={saveCustomer} />
       <Snackbar
         open={open}
         autoHideDuration={3000}
-        onClose={() => SetOpen(false)}
-        message="Customer deleted successfully"
+        onClose={() => setOpen(false)}
+        message={snackbarMessage}
       />
     </>
   );
