@@ -7,7 +7,7 @@ import CustomSnackbar from "./CustomSnackbar";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import FilterSearch from "./FilterSearch";
-import { fetchTrainings } from "./ApiTrainings";
+import { fetchTrainings } from "./apiTrainings";
 import TableRender from "./TableRender";
 
 function Traininglist() {

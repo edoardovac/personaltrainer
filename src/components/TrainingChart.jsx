@@ -1,7 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import { useState, useEffect } from "react";
 import _ from "lodash";
-import { fetchTrainings } from "./ApiTrainings";
+import { fetchTrainings } from "./apiTrainings";
 
 function TrainingChart() {
   const [trainings, setTrainings] = useState([]);
