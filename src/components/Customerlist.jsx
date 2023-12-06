@@ -103,7 +103,7 @@ function Customerlist() {
       sortable: false,
       width: 255,
       cellRenderer: (row) => (
-        <>
+        <div>
           <EditCustomer updateCustomer={updateCustomer} customer={row.data} />
           <Button
             color="error"
@@ -124,7 +124,7 @@ function Customerlist() {
             setSnackbarMessage={setSnackbarMessage}
             setSnackbarOpen={setOpen}
           />
-        </>
+        </div>
       ),
     },
 

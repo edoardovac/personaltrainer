@@ -7,7 +7,7 @@ function FilterSearch(props) {
 
   return (
     <>
-      <Typography variant="body1">
+ 
         <TextField
           type="text"
           id="filter-text-box"
@@ -23,7 +23,7 @@ function FilterSearch(props) {
             ),
           }}
         />
-      </Typography>
+
     </>
   );
 }

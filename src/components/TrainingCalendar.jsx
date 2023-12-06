@@ -38,9 +38,9 @@ function TrainingCalendar() {
     setEvents(formattedTraining);
   }, [trainings]);
 
+  //having typography wrap calendar generates a warning in the console when accessing the page
   return (
     <>
-      <p>Calendar</p>
       <Typography variant="body1">
         Welcome to the website
         <Calendar
