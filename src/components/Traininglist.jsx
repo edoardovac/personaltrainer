@@ -51,15 +51,13 @@ function Traininglist() {
   const onBtnExport = useCallback(() => {
     const params = {
       columnKeys: [
+        "date",
+        "duration",
+        "activity",
         "lastname",
         "firstname",
-        "streetaddress",
-        "postcode",
-        "city",
-        "email",
-        "phone",
       ],
-      fileName: "customerlist.csv",
+      fileName: "traininglist.csv",
     };
     gridRef.current.api.exportDataAsCsv(params);
   }, []);
