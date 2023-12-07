@@ -162,7 +162,7 @@ function Customerlist() {
         id="flex-needed"
         style={{ display: "flex", alignItems: "center", gap: "10px" }}
       >
-        <AddCustomer saveCustomer={saveCustomer} />
+        <AddCustomer saveCustomer={saveCustomer} setSnackbarMessage={setSnackbarMessage} setOpen={setOpen}/>
         <FilterSearch onFilterTextBoxChanged={onFilterTextBoxChanged} />
         <Button onClick={onBtnExport} variant="contained" size="small">
           <FileDownloadRoundedIcon />

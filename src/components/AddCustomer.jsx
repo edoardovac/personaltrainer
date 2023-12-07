@@ -32,6 +32,8 @@ function AddCustomer(props) {
 
   const addCustomer = () => {
     props.saveCustomer(customer);
+    props.setSnackbarMessage("Customer added successfully")
+    props.setOpen(true)
     handleClose();
   };
   return (
