@@ -147,15 +147,15 @@ function Customerlist() {
   return (
     <>
       <div className="ag-theme-material" style={{ height: 500 }}>
-      <AgGridReact
-        ref={gridRef}
-        rowData={customers}
-        columnDefs={columnDefs}
-        pagination={true}
-        paginationAutoPageSize={true}
-        suppressCellFocus={true}
-      />
-    </div>
+        <AgGridReact
+          ref={gridRef}
+          rowData={customers}
+          columnDefs={columnDefs}
+          pagination={true}
+          paginationAutoPageSize={true}
+          suppressCellFocus={true}
+        />
+      </div>
       <div
         id="flex-needed"
         style={{ display: "flex", alignItems: "center", gap: "10px" }}
@@ -164,6 +164,7 @@ function Customerlist() {
         <FilterSearch onFilterTextBoxChanged={onFilterTextBoxChanged} />
         <Button onClick={onBtnExport} variant="contained" size="small">
           <FileDownloadRoundedIcon />
+          Export
         </Button>
       </div>
       <CustomSnackbar

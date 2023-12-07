@@ -26,6 +26,7 @@ function TrainingCalendar() {
     setEvents(formattedTraining);
   }, [trainings]);
 
+  // calendar will show the week page 
   return (
     <>
       <div className="body1">

@@ -154,6 +154,7 @@ function Traininglist() {
         <FilterSearch onFilterTextBoxChanged={onFilterTextBoxChanged} />
         <Button onClick={onBtnExport} variant="contained" size="small">
           <FileDownloadRoundedIcon />
+          Export
         </Button>
       </div>
     </>
