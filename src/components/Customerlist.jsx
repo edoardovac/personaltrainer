@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { Button } from "@mui/material";
@@ -10,7 +11,6 @@ import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import FilterSearch from "./FilterSearch";
 import { fetchCustomers } from "./apiCustomers";
 import CustomSnackbar from "./CustomSnackbar";
-import TableRender from "./TableRender";
 
 function Customerlist() {
   const [customers, setCustomers] = useState([]);
@@ -146,7 +146,16 @@ function Customerlist() {
 
   return (
     <>
-      <TableRender rowData={customers} columnDefs={columnDefs} />
+      <div className="ag-theme-material" style={{ height: 500 }}>
+      <AgGridReact
+        ref={gridRef}
+        rowData={customers}
+        columnDefs={columnDefs}
+        pagination={true}
+        paginationAutoPageSize={true}
+        suppressCellFocus={true}
+      />
+    </div>
       <div
         id="flex-needed"
         style={{ display: "flex", alignItems: "center", gap: "10px" }}

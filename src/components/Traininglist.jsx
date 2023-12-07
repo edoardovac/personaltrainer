@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import dayjs from "dayjs";
@@ -8,7 +9,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import FilterSearch from "./FilterSearch";
 import { fetchTrainings } from "./apiTrainings";
-import TableRender from "./TableRender";
 
 function Traininglist() {
   const [trainings, setTrainings] = useState([]);
@@ -132,7 +132,16 @@ function Traininglist() {
 
   return (
     <>
-      <TableRender rowData={trainings} columnDefs={columnDefs}/>
+      <div className="ag-theme-material" style={{ height: 500 }}>
+        <AgGridReact
+          ref={gridRef}
+          rowData={trainings}
+          columnDefs={columnDefs}
+          pagination={true}
+          paginationAutoPageSize={true}
+          suppressCellFocus={true}
+        />
+      </div>
       <CustomSnackbar
         open={open}
         onClose={() => setOpen(false)}
