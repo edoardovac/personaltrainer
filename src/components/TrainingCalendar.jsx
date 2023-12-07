@@ -35,6 +35,9 @@ function TrainingCalendar() {
           startAccessor="start"
           endAccessor="end"
           style={{ height: 500 }}
+          defaultView="week"
+          min={new Date(0, 0, 0, 8, 0, 0)}
+          max={new Date(0, 0, 0, 22, 0, 0)}
         />
       </div>
     </>
