@@ -36,6 +36,8 @@ function Customerlist() {
   };
 
   const deleteCustomer = (url) => {
+    // netlify breaks if it's http 
+    url = url.replace("http://", "https://");
     if (window.confirm("Are you sure?")) {
       fetch(url, { method: "DELETE" }).then((response) => {
         if (!response.ok) {

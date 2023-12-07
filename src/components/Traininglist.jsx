@@ -30,7 +30,6 @@ function Traininglist() {
 
   // to delete training with confirmation and update table
   const deleteTraining = (url) => {
-    console.log(url);
     if (window.confirm("Are you sure?")) {
       fetch(url, { method: "DELETE" }).then((response) => {
         if (!response.ok) {

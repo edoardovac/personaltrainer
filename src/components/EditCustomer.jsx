@@ -41,8 +41,8 @@ function EditCustomer(props) {
   };
 
   const updateCustomer = () => {
-    console.log(props.customer.links[0].href);
-    props.updateCustomer(customer, props.customer.links[0].href);
+    const httpsHref = props.customer.links[0].href.replace("http://", "https://");
+    props.updateCustomer(customer, httpsHref);
     handleClose();
   };
   return (

@@ -16,11 +16,16 @@ function AddTraining(props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const customerHref = props.customer;
 
+  const httpsHref = (href) => {
+    href = href.replace("http://", "https://");
+    return href;
+  }
+
   const [training, setTraining] = useState({
     date: null,
     activity: "",
     duration: "",
-    customer: customerHref,
+    customer: httpsHref(customerHref),
   });
 
   const handleClickOpen = () => {
